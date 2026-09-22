@@ -13,14 +13,14 @@ import {
   Loader2,
   Sparkles,
 } from "lucide-react";
-import { api } from "@/lib/api";
+import { api, API_BASE_URL } from "@/lib/api";
 
 export default function IntegrationsPage() {
   const [simulating, setSimulating] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
-  const webhookUrl = "http://127.0.0.1:8000/api/leads/";
+  const webhookUrl = `${API_BASE_URL}/api/leads/`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(webhookUrl);

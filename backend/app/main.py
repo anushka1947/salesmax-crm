@@ -48,20 +48,32 @@ app = FastAPI(
     version="0.1.0",
 )
 
+import os
+
 # ---------------------------------------------------------------------------
 # CORS MIDDLEWARE (Cross-Origin Resource Sharing)
 #
-# Allows Next.js web (localhost:3000) and React Native mobile clients
-# to make API requests to this FastAPI backend without browser blocking.
+# Configured to support local development (localhost:3000, localhost:8081),
+# custom frontend domains via CORS_ORIGINS, and all Vercel deployments (*.vercel.app).
 # ---------------------------------------------------------------------------
+
+cors_origins_env = os.getenv("CORS_ORIGINS", "")
+allowed_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8081",
+    "http://127.0.0.1:8081",
+]
+if cors_origins_env:
+    for origin in cors_origins_env.split(","):
+        cleaned = origin.strip().rstrip("/")
+        if cleaned and cleaned not in allowed_origins:
+            allowed_origins.append(cleaned)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "*",
-    ],
+    allow_origins=allowed_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -117,3 +129,10 @@ def health_check():
     server is alive and responding.
     """
     return {"status": "healthy"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.getenv("PORT", "8000"))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port, reload=False)
+

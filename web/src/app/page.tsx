@@ -16,7 +16,7 @@ import {
   Loader2,
   RefreshCw,
 } from "lucide-react";
-import { api } from "@/lib/api";
+import { api, API_BASE_URL } from "@/lib/api";
 import { DashboardStats, Task } from "@/types/crm";
 
 export default function DashboardPage() {
@@ -37,7 +37,7 @@ export default function DashboardPage() {
       setTasks(tasksData.slice(0, 5));
     } catch (err: any) {
       console.error(err);
-      setError("Unable to connect to FastAPI backend at http://127.0.0.1:8000. Is the server running?");
+      setError(`Unable to connect to FastAPI backend at ${API_BASE_URL}. Is the server running?`);
     } finally {
       setLoading(false);
     }
