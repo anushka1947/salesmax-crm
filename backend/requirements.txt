@@ -1,0 +1,17 @@
+# Python packages required for Step 2: Backend Foundation
+#
+# What is requirements.txt?
+# -------------------------
+# This file lists all the external packages our project needs.
+# When you run "pip install -r requirements.txt", Python downloads
+# and installs all of these automatically.
+#
+# Why pin versions (e.g., fastapi==0.115.0)?
+# Because it ensures everyone working on the project uses the exact
+# same versions, avoiding "it works on my machine" problems.
+
+fastapi==0.115.0
+uvicorn==0.30.6
+pydantic[email]==2.9.2
+sqlalchemy==2.0.35
+psycopg2-binary==2.9.9
